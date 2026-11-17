@@ -116,8 +116,9 @@ and the same logic runs inside the deployed model, so the app can send blanks.
 
 Run **Get data insights** again on the last step for an "after" picture.
 
-After cleaning: duplicates 0%, 7 numeric + 3 categorical columns, and a single
-`loan_status` column with two classes (about 63% Approved / 37% Denied).
+After cleaning: duplicates 0%, 7 numeric columns, 3 categorical columns
+(`employment_status`, `loan_purpose`, `loan_status`), and `loan_status` has
+exactly two classes, `Approved` and `Denied` (about 63% / 37%).
 
 ![Insights report after cleaning: dataset statistics](../screenshots/02-insights-after-summary.png)
 

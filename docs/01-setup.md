@@ -50,11 +50,25 @@ Direct deployment from Canvas is normally enabled by default. To check:
 
 ## 1.6 Clone this repo locally
 
+**macOS / Linux (bash)**
+
 ```bash
 git clone https://github.com/<you>/loan-eligibility-canvas.git
 cd loan-eligibility-canvas
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+**Windows (PowerShell)**
+
+```powershell
+git clone https://github.com/<you>/loan-eligibility-canvas.git
+cd loan-eligibility-canvas
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+If PowerShell refuses to run `Activate.ps1`, allow local scripts for your user
+once: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
 
 You'll upload `data/loan_applications_raw.csv` in the next step.

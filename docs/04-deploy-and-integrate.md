@@ -43,11 +43,23 @@ list if it differs.
 Your AWS credentials need `sagemaker:InvokeEndpoint` on the endpoint
 (see [`app/iam_invoke_policy.json`](../app/iam_invoke_policy.json)).
 
+**macOS / Linux (bash)**
+
 ```bash
 export AWS_REGION=us-east-1
 export ENDPOINT_NAME=loan-eligibility-endpoint
 python app/invoke_endpoint.py app/sample_application.json
 ```
+
+**Windows (PowerShell)**
+
+```powershell
+$env:AWS_REGION = "us-east-1"
+$env:ENDPOINT_NAME = "loan-eligibility-endpoint"
+python app/invoke_endpoint.py app/sample_application.json
+```
+
+`$env:` variables last for the current PowerShell window only.
 
 The script:
 1. takes raw, messy applications (`"$85,000"`, `"12.5k"`, `"salaried "` …),
@@ -79,12 +91,26 @@ Loan app ──HTTPS POST /predict──► API Gateway ──► Lambda ──i
 
 ### Package the Lambda
 
+**macOS / Linux (bash)**
+
 ```bash
 mkdir -p lambda_package
 cp app/lambda_function.py app/preprocess.py lambda_package/
 cp -r canvas_transforms lambda_package/
 cd lambda_package && zip -r ../loan_lambda.zip . && cd ..
 ```
+
+**Windows (PowerShell)**
+
+```powershell
+New-Item -ItemType Directory -Force lambda_package | Out-Null
+Copy-Item app/lambda_function.py, app/preprocess.py lambda_package/
+Copy-Item -Recurse canvas_transforms lambda_package/
+Compress-Archive -Path lambda_package/* -DestinationPath loan_lambda.zip -Force
+```
+
+`lambda_package/*` (not `lambda_package`) keeps the files at the root of the zip,
+which is where Lambda expects `lambda_function.py`.
 
 ### Create the execution role
 
@@ -116,6 +142,8 @@ cd lambda_package && zip -r ../loan_lambda.zip . && cd ..
 
 ### Call it from anywhere
 
+**macOS / Linux (bash)**
+
 ```bash
 curl -X POST "https://<api-id>.execute-api.<region>.amazonaws.com/predict" \
   -H "Content-Type: application/json" \
@@ -123,6 +151,23 @@ curl -X POST "https://<api-id>.execute-api.<region>.amazonaws.com/predict" \
        "credit_score":"720","existing_debt":"12.5k","loan_amount":"20K",
        "employment_length":"5 years","loan_purpose":"Home Improvement"}'
 ```
+
+**Windows (PowerShell)**
+
+```powershell
+$body = @'
+{"age":"34","employment_status":"Salaried","annual_income":"$85,000",
+ "credit_score":"720","existing_debt":"12.5k","loan_amount":"20K",
+ "employment_length":"5 years","loan_purpose":"Home Improvement"}
+'@
+Invoke-RestMethod -Method Post -ContentType "application/json" -Body $body `
+  -Uri "https://<api-id>.execute-api.<region>.amazonaws.com/predict"
+```
+
+The single-quoted here-string (`@'...'@`) keeps `$85,000` literal; in a normal
+double-quoted string PowerShell would try to expand `$85` as a variable. In
+PowerShell, `curl` is an alias for `Invoke-WebRequest`, so the bash command
+above does not work as-is; use `curl.exe` if you prefer the real curl.
 
 Response:
 
