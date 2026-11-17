@@ -6,15 +6,7 @@ that another application can call.
 
 Built to learn the ML lifecycle on AWS from a cloud/DevOps background.
 
-```mermaid
-flowchart LR
-    A[Raw CSV<br/>50,000 messy rows] --> B[Canvas Data Wrangler<br/>clean + feature engineering]
-    B --> C[Canvas AutoML<br/>2-category model]
-    C --> D[SageMaker real-time<br/>endpoint]
-    E[Loan application] -->|POST /predict| F[API Gateway]
-    F --> G[Lambda<br/>same cleaning code]
-    G -->|invoke_endpoint| D
-```
+![The raw CSV is cleaned in a Canvas Data Wrangler flow with custom Python transforms, trained with an AutoML build and deployed as a real-time endpoint. Another application calls API Gateway, and Lambda cleans the input with the same transform files before invoking the endpoint.](images/architecture.svg)
 
 ## Highlights
 
@@ -64,6 +56,7 @@ Regenerate the data with `python scripts/generate_dataset.py --seed 42`.
 │   ├── iam_invoke_policy.json         # least-privilege invoke policy
 │   └── sample_application.json        # example raw applications
 ├── docs/                              # step-by-step guide
+├── images/architecture.svg            # diagram used in this README
 └── screenshots/                       # Canvas screenshots used in docs/
 ```
 
