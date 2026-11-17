@@ -1,0 +1,22 @@
+[
+  {
+    "age": "34 years",
+    "employment_status": "salaried ",
+    "annual_income": "$85,000",
+    "credit_score": "720",
+    "existing_debt": "12.5k",
+    "loan_amount": "20K",
+    "employment_length": "6 years",
+    "loan_purpose": "home_improvement"
+  },
+  {
+    "age": "23",
+    "employment_status": "Unemployed",
+    "annual_income": "14000",
+    "credit_score": "560",
+    "existing_debt": "$9,000",
+    "loan_amount": "$30,000",
+    "employment_length": "0",
+    "loan_purpose": "Business"
+  }
+]
